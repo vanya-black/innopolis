@@ -1,0 +1,11 @@
+{
+  "model": "sentence-transformers/all-MiniLM-L6-v2",
+  "dims": 384,
+  "n": 1000,
+  "source": "RAWG",
+  "projections": [
+    "UMAP",
+    "PCA"
+  ],
+  "built_at": "2026-06-26T15:05:45+00:00"
+}

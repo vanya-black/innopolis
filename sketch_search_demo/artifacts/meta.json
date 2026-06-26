@@ -1,0 +1,8 @@
+{
+  "model": "clip-ViT-B-32",
+  "dims": 512,
+  "n": 12500,
+  "n_categories": 305,
+  "device": "mps",
+  "built_at": "2026-06-26 18:36"
+}
