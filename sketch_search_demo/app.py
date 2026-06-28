@@ -36,12 +36,33 @@ def get_model():
     return embed.load_model()
 
 
+@st.cache_resource(show_spinner="Первый запуск: скачиваю галерею фото (~260 МБ, 1–2 мин)…")
+def ensure_gallery():
+    """Если фото нет (свежий деплой) — восстанавливаем их из датасета Sketchy.
+
+    Локально галерею кладёт `collect.py`; в облаке (Streamlit Cloud) его никто не
+    запускает, поэтому делаем это сами при первом старте. `collect.main()`
+    детерминирован — `gallery.json` остаётся выровненным с закоммиченным
+    `embeddings.npy`.
+    """
+    if not embed.PHOTO_DIR.exists() or not any(embed.PHOTO_DIR.glob("*/*.jpg")):
+        import collect  # ленивый импорт: pyarrow/huggingface-hub тянем только при нужде
+        collect.main()
+    return True
+
+
 st.title("✏️ Нарисуй — найди похожее")
 st.caption("Рисунок → CLIP-вектор → ближайшие фотографии в том же пространстве смыслов")
 
-if not (embed.EMB_PATH.exists() and embed.META_PATH.exists()
-        and embed.GALLERY_PATH.exists() and embed.PHOTO_DIR.exists()):
-    st.error("Нет готового индекса. Сначала: `python collect.py` → `python embed.py`")
+if not (embed.EMB_PATH.exists() and embed.META_PATH.exists() and embed.GALLERY_PATH.exists()):
+    st.error("Нет готового индекса (`artifacts/embeddings.npy` + `gallery.json` + "
+             "`meta.json`). Сначала: `python embed.py`.")
+    st.stop()
+
+try:
+    ensure_gallery()
+except Exception as e:  # noqa: BLE001 — показываем причину пользователю, а не трейсбек
+    st.error(f"Не удалось восстановить галерею фото (источник — HF-зеркало Sketchy): {e}")
     st.stop()
 
 photos, meta, matrix = load(embed.EMB_PATH.stat().st_mtime)

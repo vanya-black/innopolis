@@ -4,12 +4,3 @@
 # Для демо горячая перезагрузка не нужна.
 [server]
 fileWatcherType = "none"
-
-# Тема под слайды лекции (бирюзовый + коралловый).
-[theme]
-base = "light"
-primaryColor = "#E8623D"
-backgroundColor = "#FFFFFF"
-secondaryBackgroundColor = "#F6F7FB"
-textColor = "#1A2233"
-font = "sans serif"
