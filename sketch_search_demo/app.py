@@ -67,7 +67,7 @@ except Exception as e:  # noqa: BLE001 — показываем причину �
 
 photos, meta, matrix = load(embed.EMB_PATH.stat().st_mtime)
 
-st.sidebar.title("✏️ Нарисуй — найди похожее")
+st.sidebar.title("Нарисуй — найди похожее")
 st.sidebar.caption(f"Модель **{meta['model']}** · {meta['n']} фото · "
                    f"{meta['n_categories']} категорий · {meta['dims']}d")
 k = st.sidebar.slider("Сколько похожих показывать (k)", 4, 24, 12)
@@ -78,12 +78,12 @@ if "canvas_key" not in st.session_state:
 
 left, right = st.columns([2, 3], gap="large")
 with left:
-    st.subheader("✏️ Нарисуйте объект")
+    st.subheader("🎨 Нарисуйте объект")
     if st.button("🗑️ Очистить холст", width="stretch"):
         st.session_state.canvas_key += 1
     canvas = st_canvas(
         fill_color="rgba(0,0,0,0)", stroke_width=stroke, stroke_color="#000000",
-        background_color="#FFFFFF", height=340, width=340, drawing_mode="freedraw",
+        background_color="#FFFFFF", height=480, width=480, drawing_mode="freedraw",
         display_toolbar=True, key=f"canvas_{st.session_state.canvas_key}",
     )
     st.caption("Чёрным по белому, крупно и по центру.")
